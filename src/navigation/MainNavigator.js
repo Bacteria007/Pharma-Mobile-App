@@ -8,18 +8,21 @@ import ProfileScreen from '../screens/main/ProfileScreen';
 import colors from '../assets/colors/AppColors';
 import fonts from '../assets/fonts/MyFonts';
 import { Icons } from '../assets/icons/Icons';
+import { Dimensions } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const activeColor = colors.primary;
 const inactiveColor = colors.tab_inactive;
-const iconSize = 22;
-
+const iconSize = 24;
+const {height,width}=Dimensions.get('window')
+const tabHeight=height<630?60:70
+const tabTextSize=height<630?12:14
 const MainNavigator = () => (
   <Tab.Navigator
     screenOptions={({route}) => ({
       headerShown: false,
       tabBarLabelStyle: {
-        fontSize: 10,
+        fontSize: tabTextSize,
         marginBottom: 6,
         marginTop: 0,
         fontFamily: fonts.semibold,
@@ -28,7 +31,7 @@ const MainNavigator = () => (
         backgroundColor: colors.white,
       },
       tabBarStyle: {
-        height: 60,
+        height: tabHeight,
         borderTopWidth: 0,
         shadowColor: colors.black,
         shadowOffset: {width: 0, height: 4},

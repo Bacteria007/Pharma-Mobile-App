@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
 
   const renderSellers = ({ item, index }) => {
     return (
-      <Pressable style={styles.itemContainer} onPress={()=>navigation.navigate('StoreDetails',{item:item})}>
+      <Pressable style={styles.itemContainer} onPress={() => navigation.navigate('StoreDetails', { item: item })}>
         <View style={styles.itemImageContainer}>
           <Image source={item.image} style={styles.sellerImage} />
         </View>
@@ -136,7 +136,15 @@ const HomeScreen = ({ navigation }) => {
             <Icons.Fontisto name='prescription' color={colors.white} size={15} />
           </Pressable>
           {selectedImage && (
-            <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+            <>
+              <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+              <Pressable
+                style={styles.sendButton}
+                onPress={handleSendPrescription}
+              >
+                <Text style={styles.sendButtonText}>Send to Store</Text>
+              </Pressable>
+            </>
           )}
 
 
@@ -150,7 +158,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={{ color: colors.black, textAlign: 'center', fontWeight: '700', marginTop: 10 }}>Central Store</Text>
               </View>
               {/* points */}
-              <View style={{ flex: 1, paddingHorizontal:10}}>
+              <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                   <View style={styles.bulletPoint} />
                   <Text style={styles.pointText}>48 hours service on all working days</Text>
@@ -236,7 +244,7 @@ const HomeScreen = ({ navigation }) => {
           />
         </ScrollView>
         <ReactNativeModal
-          isVisible={isModalVisible}
+          visible={isModalVisible}
           onBackButtonPress={hideModal}
           onBackdropPress={hideModal}
           style={{ margin: 0 }}
@@ -244,37 +252,23 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Upload Prescription</Text>
 
-            {selectedImage ? (
-              <View style={styles.previewContainer}>
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={styles.previewImage}
-                />
-                <Pressable
-                  style={styles.sendButton}
-                  onPress={handleSendPrescription}
-                >
-                  <Text style={styles.sendButtonText}>Send to Store</Text>
-                </Pressable>
-              </View>
-            ) : (
-              <View style={styles.modalContent}>
-                <Pressable
-                  style={styles.modalOption}
-                  onPress={() => handleImagePick('camera')}
-                >
-                  <Icons.FontAwesome name="camera" size={20} color={colors.black} />
-                  <Text>Open Camera</Text>
-                </Pressable>
-                <Pressable
-                  style={styles.modalOption}
-                  onPress={() => handleImagePick('gallery')}
-                >
-                  <Icons.Ionicons name="image" size={20} color={colors.black} />
-                  <Text>Choose from Gallery</Text>
-                </Pressable>
-              </View>
-            )}
+            <View style={styles.modalContent}>
+              <Pressable
+                style={styles.modalOption}
+                onPress={() => handleImagePick('camera')}
+              >
+                <Icons.FontAwesome name="camera" size={20} color={colors.black} />
+                <Text>Open Camera</Text>
+              </Pressable>
+              <Pressable
+                style={styles.modalOption}
+                onPress={() => handleImagePick('gallery')}
+              >
+                <Icons.Ionicons name="image" size={20} color={colors.black} />
+                <Text>Choose from Gallery</Text>
+              </Pressable>
+            </View>
+
           </View>
         </ReactNativeModal>
       </View>

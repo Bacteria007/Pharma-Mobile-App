@@ -39,27 +39,49 @@ const ProfileScreen = () => {
         />
       </View> */}
       <View style={styles.item}>
-        <Text style={styles.itemTitle}>Edit Profile</Text>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('EditProfile')}>
-          <Text style={styles.btnTxt}>Edit</Text>
+        <View style={styles.leftView}>
+          <Icons.Ionicons name="person-sharp" size={20} color={colors.primary} />
+          <Text style={styles.itemTitle}>Edit Profile</Text>
+        </View>
+        <Pressable onPress={() => navigation.navigate('EditProfile')}>
+          {/* <Text style={styles.btnTxt}>Edit</Text> */}
+          <Icons.Feather name='chevron-right' size={20} color={colors.black} />
         </Pressable>
       </View>
       <View style={styles.item}>
-        <Text style={styles.itemTitle}>Previous Order History</Text>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('OrdersHistory')}>
-          <Text style={styles.btnTxt}>View</Text>
+        <View style={styles.leftView}>
+          <Icons.Fontisto name="history" size={20} color={colors.primary} />
+          <Text style={styles.itemTitle}>Previous Order History</Text>
+        </View>
+        <Pressable onPress={() => navigation.navigate('OrdersHistory')}>
+          <Icons.Feather name='chevron-right' size={20} color={colors.black} />
         </Pressable>
       </View>
       <View style={styles.item}>
-        <Text style={styles.itemTitle}>Check Appointments</Text>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('Appointments')}>
-          <Text style={styles.btnTxt}>View</Text>
+        <View style={styles.leftView}>
+          <Icons.Fontisto name="doctor" size={20} color={colors.primary} />
+          <Text style={styles.itemTitle}>Check Appointments</Text>
+        </View>
+        <Pressable onPress={() => navigation.navigate('Appointments')}>
+          <Icons.Feather name='chevron-right' size={20} color={colors.black} />
         </Pressable>
       </View>
       <View style={styles.item}>
-        <Text style={styles.itemTitle}>Prescriptions</Text>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('AppointmentScreen')}>
-          <Text style={styles.btnTxt}>Edit</Text>
+        <View style={styles.leftView}>
+          <Icons.Fontisto name="prescription" size={20} color={colors.primary} />
+          <Text style={styles.itemTitle}>Prescriptions</Text>
+        </View>
+        <Pressable onPress={() => navigation.navigate('AppointmentScreen')}>
+          <Icons.Feather name='chevron-right' size={20} color={colors.black} />
+        </Pressable>
+      </View>
+      <View style={styles.item}>
+        <View style={styles.leftView}>
+          <Icons.AntDesign name="infocirlceo" size={20} color={colors.primary} />
+          <Text style={styles.itemTitle}>About</Text>
+        </View>
+        <Pressable onPress={() => navigation.navigate('AppointmentScreen')}>
+          <Icons.Feather name='chevron-right' size={20} color={colors.black} />
         </Pressable>
       </View>
     </View>
@@ -74,6 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
   },
+  leftView: { flexDirection: 'row', gap: 15 },
   title: {
     fontSize: 20,
     fontFamily: fonts.bold,
@@ -89,9 +112,9 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: colors.primaryLight,
+    // backgroundColor: colors.primaryLight,
     marginBottom: 16,
-    marginHorizontal:16,
+    marginHorizontal: 16,
   },
   itemTitle: {
     fontSize: 16,
