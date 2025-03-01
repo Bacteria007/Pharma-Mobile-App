@@ -1,14 +1,14 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import commonStyles from '../../style/commonStyles';
-import {Icons} from '../../assets/icons/Icons';
-import colors from '../../assets/colors/AppColors';
-import fonts from '../../assets/fonts/MyFonts';
-import AuthTextinput from '../../components/inputs/AuthTextinput';
-import PrimaryButton from '../../components/buttons/PrimaryButton';
-import AppHeader from '../../components/headers/AppHeader';
+import commonStyles from '../../../style/commonStyles';
+import {Icons} from '../../../assets/icons/Icons';
+import colors from '../../../assets/colors/AppColors';
+import fonts from '../../../assets/fonts/MyFonts';
+import AuthTextinput from '../../../components/inputs/AuthTextinput';
+import PrimaryButton from '../../../components/buttons/PrimaryButton';
+import AppHeader from '../../../components/headers/AppHeader';
 import { useNavigation } from '@react-navigation/native';
-import BackHeader from '../../components/headers/BackHeader';
+import BackHeader from '../../../components/headers/BackHeader';
 
 const EditProfileScreen = () => {
   const [name, setName] = useState('Muhammad Nasir');

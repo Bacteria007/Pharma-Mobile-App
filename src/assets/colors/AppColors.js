@@ -7,5 +7,9 @@ const colors = {
   bgClr: '#F4FCFF',
   tab_inactive: '#C0C5C2',
   light_black: 'rgba(0, 0, 0, 0.3)',
+  placeholder:'#666464'
 };
 export default colors;
+
+// primary: '#00796B',
+// primaryLight: '#80CBC4',

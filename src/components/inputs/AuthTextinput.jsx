@@ -25,7 +25,7 @@ const AuthTextinput = ({
                 keyboardType={keyboard}
                 autoCapitalize="none"
                 secureTextEntry={secureTextEntry && !showPassword}
-                placeholderTextColor={colors.light_black}
+                placeholderTextColor={colors.placeholder}
                 underlineColorAndroid="transparent"
                 importantForAutofill="off"
             />
@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
         paddingLeft: 8,
         paddingRight: 16,
         marginBottom: 15,
+        borderWidth:1,
+        borderColor:'#ccc'
     },
     inputStyle: {
         flex: 1,

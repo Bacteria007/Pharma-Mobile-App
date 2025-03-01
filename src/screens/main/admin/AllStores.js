@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Prescriptions = () => {
+const AllStores = () => {
   return (
     <View>
-      <Text>Prescriptions</Text>
+      <Text>AllStores</Text>
     </View>
   )
 }
 
-export default Prescriptions
+export default AllStores
 
 const styles = StyleSheet.create({})

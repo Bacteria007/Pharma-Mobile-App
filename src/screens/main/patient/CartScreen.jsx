@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import MyImages from '../../assets/images/MyImages';
-import colors from '../../assets/colors/AppColors';
-import fonts from '../../assets/fonts/MyFonts';
-import AppHeader from '../../components/headers/AppHeader';
-import { Icons } from '../../assets/icons/Icons'; // Import icons
+import MyImages from '../../../assets/images/MyImages';
+import colors from '../../../assets/colors/AppColors';
+import fonts from '../../../assets/fonts/MyFonts';
+import AppHeader from '../../../components/headers/AppHeader';
+import { Icons } from '../../../assets/icons/Icons'; // Import icons
 
 const DELIVERY_CHARGE = 5;
 

@@ -1,32 +1,48 @@
-import { ScrollView, StyleSheet, Text, View, ImageBackground, Pressable, FlatList, Image, Alert, Button } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, ImageBackground, Pressable, FlatList, Image, Alert, Button, PermissionsAndroid } from 'react-native';
 import React, { useState } from 'react';
-import colors from '../../assets/colors/AppColors';
-import AppHeader from '../../components/headers/AppHeader';
-import MyImages from '../../assets/images/MyImages'; // Import your background image
-import { getColmnCount, hp, wp } from '../../helpers/common';
-import { Icons } from '../../assets/icons/Icons';
+import colors from '../../../assets/colors/AppColors';
+import AppHeader from '../../../components/headers/AppHeader';
+import MyImages from '../../../assets/images/MyImages'; // Import your background image
+import { getColmnCount, hp, wp } from '../../../helpers/common';
+import { Icons } from '../../../assets/icons/Icons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ReactNativeModal from 'react-native-modal';
+import fonts from '../../../assets/fonts/MyFonts';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const horizontalSpacing = 20
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const role = useSelector(state => state.user.role);
+  console.log('===============', role);
+  const navigation = useNavigation()
   const [search, setSearch] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null); // Store selected image
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
-  const [sellers, setSellers] = useState([
+  const [isSellersExpanded, setSellersExpanded] = useState(false);
+  const [isDoctorsExpanded, setDoctorsExpanded] = useState(false);
+
+  const toggleSellers = () => setSellersExpanded(!isSellersExpanded);
+  const toggleDoctors = () => setDoctorsExpanded(!isDoctorsExpanded);
+
+  const sellers = [
     { id: 1, name: 'Medical City', image: MyImages.heart_logo },
     { id: 2, name: 'Pharmacy Store', image: MyImages.heart_logo },
     { id: 3, name: 'Medifix Shop', image: MyImages.heart_logo },
     { id: 4, name: 'Medical City', image: MyImages.heart_logo },
     { id: 5, name: 'Burhan Pharmacy', image: MyImages.heart_logo },
     { id: 6, name: 'Medical Store', image: MyImages.heart_logo },
-  ]);
-  const [sponsors, setSponsors] = useState([
-    { id: 1, name: '', image: MyImages.heart_logo },
-    { id: 1, name: '', image: MyImages.heart_logo },
-    { id: 1, name: '', image: MyImages.heart_logo },
+    { id: 7, name: 'New Pharmacy', image: MyImages.heart_logo },
+  ];
+  const [medicines, setMedicines] = useState([
+    { id: 1, name: 'Paracetamol', price: 5.99, image: MyImages.med2, desc: 'Used for pain relief and fever reduction.' },
+    { id: 2, name: 'Ibuprofen', price: 7.49, image: MyImages.med1, desc: 'Helps reduce inflammation and relieve pain.' },
+    { id: 3, name: 'Aspirin', price: 6.29, image: MyImages.med3, desc: 'Used as a blood thinner and pain reliever.' },
+    { id: 4, name: 'Vitamin C', price: 8.99, image: MyImages.med1, desc: 'Boosts immune health and antioxidant levels.' },
+    { id: 5, name: 'Cough Syrup', price: 12.49, image: MyImages.med2, desc: 'Relieves cough and soothes throat.' },
+    { id: 6, name: 'Pain Relief', price: 9.99, image: MyImages.med3, desc: 'Effective for general pain relief.' },
   ]);
   const doctorCategories = [
     { id: 1, name: 'Lungs', image: MyImages.lungs },
@@ -35,7 +51,19 @@ const HomeScreen = ({ navigation }) => {
     { id: 4, name: 'Digestive Disorder', image: MyImages.digestion },
     { id: 5, name: 'Liver', image: MyImages.liver },
     { id: 6, name: 'Bones and Joints', image: MyImages.bones },
-  ]
+    { id: 7, name: 'Mental illness', image: MyImages.brain },
+    { id: 8, name: 'Skin and Hair', image: MyImages.hair },
+    { id: 9, name: 'Teeth', image: MyImages.teeth },
+    { id: 10, name: 'Psychological Disorder', image: MyImages.brain },
+    { id: 11, name: 'Surgery', image: MyImages.surgery },
+    { id: 12, name: 'Eye', image: MyImages.eye },
+  ];
+  const [sponsors, setSponsors] = useState([
+    { id: 1, name: '', image: MyImages.heart_logo },
+    { id: 1, name: '', image: MyImages.heart_logo },
+    { id: 1, name: '', image: MyImages.heart_logo },
+  ]);
+
   const [doctorsByAppointments, setDoctorsByAppointments] = useState([
     { id: 1, name: 'Dilgam Mammadov', image: MyImages.d1, exp: '10 Years' },
     { id: 2, name: 'Valiyeva Elnura', image: MyImages.d2, exp: '10 Years' },
@@ -45,8 +73,52 @@ const HomeScreen = ({ navigation }) => {
     console.log('Search', search);
   };
 
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Camera Permission',
+          message: 'This app needs access to your camera.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
 
-  const handleImagePick = (type) => {
+  const requestStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission',
+          message: 'This app needs access to your storage.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
+  const handleImagePick = async (type) => {
+    const hasCameraPermission = await requestCameraPermission();
+    const hasStoragePermission = await requestStoragePermission();
+
+    if (!hasCameraPermission || !hasStoragePermission) {
+      Alert.alert('Permission Denied', 'Camera or Storage permission is required.');
+      return;
+    }
     hideModal()
     const options = {
       mediaType: 'photo',
@@ -82,14 +154,40 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleSendPrescription = () => {
-    Alert.alert('Prescription Sent', 'Your prescription has been sent to the store.');
-    setSelectedImage(null); // Clear the image after sending
+    Alert.alert(
+      'Prescription Sent',
+      'Your prescription has been sent to the store.',
+      [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('PatientScreens', { screen: 'PCheckout', })
+        },
+      ],
+      { cancelable: false }
+    ); setSelectedImage(null); // Clear the image after sending
     hideModal();
   };
 
   const renderSellers = ({ item, index }) => {
     return (
-      <Pressable style={styles.itemContainer} onPress={() => navigation.navigate('StoreDetails', { item: item })}>
+      <Pressable style={styles.itemContainer}
+        onPress={() =>
+          navigation.navigate('PatientScreens', { screen: 'MedicineDetails', params: { medicine:item } })
+          //  navigation.navigate('PatientScreens', { screen: 'StoreDetails', params: { item: item } })
+        }
+      >
+        <View style={styles.itemImageContainer}>
+          <Image source={item.image} style={styles.sellerImage} />
+        </View>
+        <Text style={styles.itemText}>{item.name}</Text>
+      </Pressable>
+    )
+  }
+  const renderDoctors = ({ item, index }) => {
+    return (
+      <Pressable style={styles.itemContainer}
+        onPress={() => navigation.navigate('PatientScreens', { screen: 'DoctorDetails', params: { item: item } })}
+      >
         <View style={styles.itemImageContainer}>
           <Image source={item.image} style={styles.sellerImage} />
         </View>
@@ -130,21 +228,30 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.heroSubtitle}>Get the best prices on medicines, with or without a prescription, and book video appointments with trusted doctors</Text>
             </View>
           </ImageBackground>
-
-          <Pressable style={styles.uploadBtn} onPress={showModal}>
-            <Text style={styles.uploadTxt}>Upload Your Prescription</Text>
-            <Icons.Fontisto name='prescription' color={colors.white} size={15} />
-          </Pressable>
+          {!selectedImage && (
+            <Pressable style={styles.uploadBtn} onPress={showModal}>
+              <Text style={styles.uploadTxt}>Upload Your Prescription</Text>
+              <Icons.Fontisto name='prescription' color={colors.white} size={15} />
+            </Pressable>
+          )}
           {selectedImage && (
-            <>
+            <View style={{ marginTop: 20 }}>
               <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
-              <Pressable
-                style={styles.sendButton}
-                onPress={handleSendPrescription}
-              >
-                <Text style={styles.sendButtonText}>Send to Store</Text>
-              </Pressable>
-            </>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15, paddingHorizontal: 16, marginTop: 20 }}>
+                <Pressable
+                  style={styles.sendButton}
+                  onPress={showModal}
+                >
+                  <Text style={styles.sendButtonText}>Change</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.sendButton}
+                  onPress={handleSendPrescription}
+                >
+                  <Text style={styles.sendButtonText}>Send to Store</Text>
+                </Pressable>
+              </View>
+            </View>
           )}
 
 
@@ -172,14 +279,17 @@ const HomeScreen = ({ navigation }) => {
             <Text style={{ color: 'red', marginVertical: 12, textAlign: 'center', fontWeight: '700' }}>Payment by card and on Return Back Policy</Text>
           </View>
           <View style={styles.listHeader}>
-            <Text style={styles.headerText}>Shop By sellers</Text>
-            <Text style={styles.headerText}>View all</Text>
+            <Text style={styles.headerText}>Medicines</Text>
+            <Pressable onPress={() => navigation.navigate('PatientScreens', { screen: 'Medicines' })}>
+              <Text style={styles.viewAllTxt}>View all{' >'}</Text>
+            </Pressable>
           </View>
           <FlatList
-            data={sellers}
+            data={medicines.slice(0, 61)}
             numColumns={3}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderSellers}
+            showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
               paddingHorizontal: horizontalSpacing,
               paddingBottom: 20,
@@ -191,13 +301,17 @@ const HomeScreen = ({ navigation }) => {
           />
           <View style={styles.listHeader}>
             <Text style={styles.headerText}>Find Doctor by Specialty</Text>
-            <Text style={styles.headerText}>View all</Text>
+            <Pressable onPress={toggleDoctors}>
+              <Text style={styles.viewAllTxt}>{isDoctorsExpanded ? 'Show Less' : 'View all >'}</Text>
+            </Pressable>
           </View>
           <FlatList
-            data={doctorCategories}
+            data={isDoctorsExpanded ? doctorCategories : doctorCategories.slice(0, 6)}
             numColumns={3}
+            // horizontal
             keyExtractor={(item) => item.id.toString()}
-            renderItem={renderSellers}
+            // showsHorizontalScrollIndicator={false}
+            renderItem={renderDoctors}
             contentContainerStyle={{
               paddingHorizontal: horizontalSpacing,
               paddingBottom: 20,
@@ -207,25 +321,23 @@ const HomeScreen = ({ navigation }) => {
               marginVertical: 10,
             }}
           />
-          <View style={styles.listHeader}>
+          {/* <View style={styles.listHeader}>
             <Text style={styles.headerText}>Get Appointments by Doctors</Text>
-            <Text style={styles.headerText}>View all</Text>
+            <Text style={styles.viewAllTxt}>View all{' >'}</Text>
           </View>
           <FlatList
+          horizontal={true}
             data={doctorsByAppointments}
-            numColumns={3}
+            // numColumns={3}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderAppointmnts}
             contentContainerStyle={{
               paddingHorizontal: horizontalSpacing,
               paddingBottom: 20,
             }}
-            columnWrapperStyle={{
-              justifyContent: 'space-between',
-              marginVertical: 10,
-            }}
-          />
-          <View style={styles.listHeader}>
+           
+          /> */}
+          {/* <View style={styles.listHeader}>
             <Text style={styles.headerText}>Our Sponsers</Text>
           </View>
           <FlatList
@@ -241,13 +353,13 @@ const HomeScreen = ({ navigation }) => {
               justifyContent: 'space-between',
               marginVertical: 10,
             }}
-          />
+          /> */}
         </ScrollView>
         <ReactNativeModal
           visible={isModalVisible}
           onBackButtonPress={hideModal}
           onBackdropPress={hideModal}
-          style={{ margin: 0 }}
+          style={{ margin: 0, backgroundColor: 'rgba(0,0,0,0.5)' }}
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Upload Prescription</Text>
@@ -322,7 +434,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   selectedImage: {
-    height: 100, width: '100%', resizeMode: 'contain'
+    height: 250, width: '100%', resizeMode: 'contain'
   },
   modalContainer: {
     backgroundColor: colors.white,
@@ -336,19 +448,19 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start', marginTop: 10,
   },
   modalTitle: {
-    fontSize: 16, color: colors.primary, fontWeight: '700', textAlign: 'center', borderBottomWidth: 2, borderBottomColor: colors.primary, paddingBottom: 5
+    fontSize: 16, color: colors.primary, fontFamily:fonts.bold, textAlign: 'center', borderBottomWidth: 2, borderBottomColor: colors.primary, paddingBottom: 5
   },
   modalOption: {
     fontSize: 14, color: colors.black, marginBottom: 15, flexDirection: 'row', gap: 10, width: '100%', padding: 10
   },
   itemImageContainer: {
-    margin: 10, padding: 10, borderRadius: 999, backgroundColor: colors.white, alignItems: 'center'
+    margin: 10, padding: 10, borderRadius: 999, backgroundColor: colors.white, alignItems: 'center',elevation:2
   },
   doctorImageContainer: {
     margin: 10, borderRadius: 999, backgroundColor: colors.white, alignItems: 'center'
   },
   itemContainer: {
-    justifyContent: 'center', alignItems: 'center',
+    justifyContent: 'center', alignItems: 'center',elevation:4
   },
   sellerImage: {
     width: 30, height: 30, borderRadius: 25, margin: 5, resizeMode: 'contain'
@@ -360,7 +472,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row', paddingHorizontal: horizontalSpacing, width: '100%', justifyContent: 'space-between', marginVertical: 10
   },
   headerText: {
-    fontSize: 14, color: colors.black, fontWeight: '700'
+    fontSize: 14, color: colors.black, fontFamily:fonts.bold
+  },
+  viewAllTxt: {
+    fontSize: 12, color: colors.light_black, fontFamily:fonts.medium
   },
   itemText: {
     fontSize: 12, color: colors.black,
@@ -376,12 +491,13 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     backgroundColor: colors.primary,
-    padding: 10,
-    borderRadius: 8,
+    paddingHorizontal: 10, paddingVertical: 4,
+    borderRadius: 4,
   },
   sendButtonText: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
+    fontFamily: fonts.medium
   },
 });

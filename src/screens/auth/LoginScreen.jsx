@@ -27,7 +27,7 @@ const LoginScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleLogin = () => {
-    navigation.navigate('MainNavigator')
+    navigation.navigate('Main')
 
   }
   const handleSignup = () => {
@@ -48,7 +48,6 @@ const LoginScreen = () => {
             <Image source={MyImages.heart_logo} style={styles.logo} />
           </View>
 
-          {/* Input Fields with ScrollView */}
           <View style={styles.inputsContainer}>
             <ScrollView
               style={{ flex: 1 }}

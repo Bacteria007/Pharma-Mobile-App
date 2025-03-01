@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, FlatList } from 'react-native';
-import MyImages from '../../assets/images/MyImages';
-import colors from '../../assets/colors/AppColors';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  Dimensions,
+  Pressable,
+} from 'react-native';
+import MyImages from '../../../assets/images/MyImages';
+import BackHeader from '../../../components/headers/BackHeader';
+import commonStyles from '../../../style/commonStyles';
+import fonts from '../../../assets/fonts/MyFonts';
+import colors from '../../../assets/colors/AppColors';
 import { Rating } from 'react-native-ratings';
-import commonStyles from '../../style/commonStyles';
-import fonts from '../../assets/fonts/MyFonts';
-import AppHeader from '../../components/headers/AppHeader';
-import { useNavigation } from '@react-navigation/native';
 
-const DoctorScreen = () => {
-  const navigation = useNavigation()
+const { width } = Dimensions.get('window');
+
+const DoctorsDetailScreen = (props) => {
+  const { item } = props.route.params;
+
   const [searchDoctor, setSearchDoctor] = useState('')
   const [doctors, setDoctors] = useState([
     {
@@ -32,6 +42,26 @@ const DoctorScreen = () => {
       designation: 'Plastic Surgeon',
       charges: '30AZN',
     },
+    {
+      id: 3,
+      name: 'Dr. Doe',
+      image: MyImages.d2,
+      ratings: '4.8',
+      experience: '15 years',
+      description: `Dr. Doe is a renowned general practitioner known for his exceptional care and dedication. He has been serving patients for over 15 years with a focus on preventive care.`,
+      designation: 'Plastic Surgeon',
+      charges: '30AZN',
+    },
+    {
+      id: 4,
+      name: 'Dr. Doe',
+      image: MyImages.d2,
+      ratings: '4.8',
+      experience: '15 years',
+      description: `Dr. Doe is a renowned general practitioner known for his exceptional care and dedication. He has been serving patients for over 15 years with a focus on preventive care.`,
+      designation: 'Plastic Surgeon',
+      charges: '30AZN',
+    },
   ]);
 
   const renderDoctorItem = ({ item }) => (
@@ -39,7 +69,7 @@ const DoctorScreen = () => {
       <View style={styles.listItemLeft}>
         <Image source={item.image} style={styles.image} />
         <Text style={styles.text}>{item.name}</Text>
-        <Text style={[styles.txtSm,{fontSize:12}]}>{item.designation}</Text>
+        <Text style={[styles.txtSm, { fontSize: 12 }]}>{item.designation}</Text>
         <Rating
           imageSize={15}
           startingValue={parseFloat(item.ratings)}
@@ -57,10 +87,10 @@ const DoctorScreen = () => {
         <Text style={styles.txtLg}>Consultancy Charges</Text>
         <Text style={styles.txtSm}>{item.charges} per hour</Text>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.btn} onPress={() => navigation.navigate('EmergencyAppointment', { item: item })}>
+          <Pressable style={styles.btn} onPress={() => props.navigation.navigate('PatientScreens', { screen: 'EmergencyAppointment', params: { item: item } })}>
             <Text style={styles.btnTxt}>Emergency</Text>
           </Pressable>
-          <Pressable style={styles.btn} onPress={() => navigation.navigate('ScheduleAppointment', { item: item })}>
+          <Pressable style={styles.btn} onPress={() => props.navigation.navigate('PatientScreens', { screen: 'ScheduleAppointment', params: { item: item } })}>
             <Text style={styles.btnTxt}>Book Later</Text>
           </Pressable>
         </View>
@@ -70,9 +100,10 @@ const DoctorScreen = () => {
   const handleSearch = () => {
     console.log('searching doctors')
   }
+
   return (
-    <View style={[commonStyles.container]}>
-      <AppHeader placeholder={'Search Doctors'} state={searchDoctor} setState={setSearchDoctor} searchFunc={handleSearch} />
+    <View style={commonStyles.container}>
+      <BackHeader title={`${item.name} Doctors`} />
       <FlatList
         data={doctors}
         renderItem={renderDoctorItem}
@@ -83,9 +114,12 @@ const DoctorScreen = () => {
   );
 };
 
-export default DoctorScreen;
+export default DoctorsDetailScreen;
 
 const styles = StyleSheet.create({
+
+
+
   listItem: {
     backgroundColor: colors.primaryLight,
     padding: 16,

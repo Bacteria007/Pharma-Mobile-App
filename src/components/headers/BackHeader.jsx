@@ -7,9 +7,9 @@ import colors from '../../assets/colors/AppColors'
 const BackHeader = ({ title }) => {
     const navigation = useNavigation()
     return (
-        <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center',margin:16 }}>
+        <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center',backgroundColor:colors.bgClr,padding:16 }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icons.AntDesign name="arrowleft" size={24} color="black" />
+                <Icons.Entypo name="chevron-small-left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.title}>{title}</Text>
         </View>

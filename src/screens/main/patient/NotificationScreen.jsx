@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import BackHeader from '../../components/headers/BackHeader'
-import commonStyles from '../../style/commonStyles'
+import BackHeader from '../../../components/headers/BackHeader'
+import commonStyles from '../../../style/commonStyles'
 
 const NotificationScreen = () => {
   return (

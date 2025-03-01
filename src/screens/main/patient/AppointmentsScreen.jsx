@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import MyImages from '../../assets/images/MyImages';
-import commonStyles from '../../style/commonStyles';
-import BackHeader from '../../components/headers/BackHeader';
-import fonts from '../../assets/fonts/MyFonts';
-import colors from '../../assets/colors/AppColors';
+import React, {useState} from 'react';
+import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import MyImages from '../../../assets/images/MyImages';
+import commonStyles from '../../../style/commonStyles';
+import BackHeader from '../../../components/headers/BackHeader';
+import fonts from '../../../assets/fonts/MyFonts';
+import colors from '../../../assets/colors/AppColors';
 import Modal from 'react-native-modal';
 
 const AppointmentsScreen = () => {
@@ -63,29 +56,34 @@ const AppointmentsScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-  const openCancelModal = (appointment) => {
+  const openCancelModal = appointment => {
     setSelectedAppointment(appointment);
     setIsModalVisible(true);
   };
 
   const cancelAppointment = () => {
-    setAppointments((prev) =>
-      prev.filter((appointment) => appointment.id !== selectedAppointment.id)
+    setAppointments(prev =>
+      prev.filter(appointment => appointment.id !== selectedAppointment.id),
     );
     setIsModalVisible(false);
     setSelectedAppointment(null);
   };
 
-  const renderAppointments = ({ item }) => (
-    <View style={{ flexDirection: 'row', marginBottom: 20 ,padding:10}}>
+  const renderAppointments = ({item}) => (
+    <View style={{flexDirection: 'row', marginBottom: 20, padding: 10}}>
       <Image source={item.image} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.title}>{item.doctor}</Text>
         <Text style={styles.date}>Date: {item.date}</Text>
       </View>
-        <Pressable onPress={() => openCancelModal(item)} style={{padding:8,backgroundColor:colors.primary,justifyContent:'center',alignItems:'center',alignSelf:'center'}}>
-          <Text style={{textAlign:'center',color:colors.white,borderRadius:8}}>Cancel</Text>
-        </Pressable>
+      <Pressable
+        onPress={() => openCancelModal(item)}
+        style={styles.listBtnCancel}>
+        <Text
+          style={{textAlign: 'center', color: colors.white, borderRadius: 8}}>
+          Cancel
+        </Text>
+      </Pressable>
     </View>
   );
 
@@ -95,8 +93,8 @@ const AppointmentsScreen = () => {
       <FlatList
         data={appointments}
         renderItem={renderAppointments}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 16 }}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={{padding: 16}}
       />
 
       {/* Cancel Appointment Modal */}
@@ -107,8 +105,7 @@ const AppointmentsScreen = () => {
         animationIn="fadeIn"
         animationOut="fadeOut"
         backdropColor="rgba(0, 0, 0, 0.5)"
-        style={{backgroundColor:"rgba(0, 0, 0, 0.5)",margin:0,padding:20}}
-      >
+        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', margin: 0, padding: 20}}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Cancel Appointment</Text>
           <Text style={styles.modalMessage}>
@@ -117,14 +114,10 @@ const AppointmentsScreen = () => {
           <View style={styles.modalButtons}>
             <Pressable
               style={styles.cancelButton}
-              onPress={() => setIsModalVisible(false)}
-            >
+              onPress={() => setIsModalVisible(false)}>
               <Text style={styles.buttonText}>No</Text>
             </Pressable>
-            <Pressable
-              style={styles.confirmButton}
-              onPress={cancelAppointment}
-            >
+            <Pressable style={styles.confirmButton} onPress={cancelAppointment}>
               <Text style={styles.buttonText}>Yes</Text>
             </Pressable>
           </View>
@@ -144,7 +137,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   info: {
-    marginLeft: 16,flex:1
+    marginLeft: 16,
+    flex: 1,
   },
   title: {
     fontSize: 16,
@@ -188,7 +182,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '75%',
-    gap:20,
+    gap: 20,
   },
   cancelButton: {
     backgroundColor: colors.primary,
@@ -212,5 +206,14 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: fonts.medium,
     fontSize: 14,
+  },
+  listBtnCancel: {
+    padding: 6,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 4,
+
   },
 });
